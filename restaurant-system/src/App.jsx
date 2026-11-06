@@ -81,8 +81,6 @@ function App() {
     0
   );
 
-
-
   return (
     <div>
       <Navbar />
