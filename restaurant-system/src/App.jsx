@@ -1,18 +1,19 @@
 
 import { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Menu from "./components/Menu";
-import Cart from "./components/Cart";
-import Reservation from "./components/Reservation";
-import Checkout from "./components/Checkout";
-import OrderConfirmation from "./components/OrderConfirmation";
-import OrderTracking from "./components/OrderTracking";
-import CustomerAccount from "./components/CustomerAccount";
+import Home from "./pages/Home";
+import MenuPage from "./pages/MenuPage";
+import CartPage from "./pages/CartPage";
+import ReservationPage from "./pages/ReservationPage";
+import AccountPage from "./pages/AccountPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 function App() {
   const [cart, setCart] = useState([]);
   const [order, setOrder] = useState(null);
   const [orderHistory, setOrderHistory] = useState([]);
+  const navigate = useNavigate();
 
   // Add items to cart
   function addToCart(item) {
@@ -85,46 +86,53 @@ function App() {
     <div>
       <Navbar />
 
-      <h1>Restaurant Management System</h1>
+      <Routes>
+        <Route path="/" element={<Home />} />
 
-      {order ? (
-        <>
-          <OrderConfirmation
-            order={order}
-            onNewOrder={() => setOrder(null)}
-          />
+        <Route
+          path="/menu"
+          element={<MenuPage onAddToCart={addToCart} />}
+        />
 
-          <OrderTracking
-            order={order}
-            onUpdateStatus={updateOrderStatus}
-          />
-        </>
-      ) : (
-        <>
-          <Menu onAddToCart={addToCart} />
-
-          <Cart
-            cart={cart}
-            totalItems={totalItems}
-            onRemove={removeFromCart}
-            onUpdateQuantity={updateQuantity}
-          />
-
-          {cart.length > 0 && (
-            <Checkout
+        <Route
+          path="/cart"
+          element={
+            <CartPage
               cart={cart}
+              totalItems={totalItems}
+              onRemove={removeFromCart}
+              onUpdateQuantity={updateQuantity}
               onPlaceOrder={placeOrder}
             />
-          )}
+          }
+        />
 
-          <Reservation />
+        <Route
+          path="/reservations"
+          element={<ReservationPage />}
+        />
 
-          <CustomerAccount orders={orderHistory} />
-        </>
-      )}
+        <Route
+          path="/account"
+          element={<AccountPage orders={orderHistory} />}
+        />
+
+        <Route
+          path="/order-confirmation"
+          element={
+            <OrderConfirmationPage
+              order={order}
+              onNewOrder={() => {
+                setOrder(null);
+                navigate("/menu");
+              }}
+              onUpdateStatus={updateOrderStatus}
+            />
+          }
+        />
+      </Routes>
     </div>
   );
-
 
 }
 
