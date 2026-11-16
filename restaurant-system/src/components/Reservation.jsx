@@ -1,94 +1,39 @@
 import { useState } from "react";
+import ReservationForm from "./ReservationForm";
+import ReservationList from "./ReservationList";
+import { useRestaurant } from "../context/RestaurantContext";
 
 function Reservation() {
-    const [name, setName] = useState("");
-    const [date, setDate] = useState("");
-    const [time, setTime] = useState("");
-    const [guests, setGuests] = useState(1);
-    const [eventType, setEventType] = useState("Regular");
-    const [reservation, setReservation] = useState(null);
+  const { addReservation } = useRestaurant();
+  const [confirmation, setConfirmation] = useState(null);
 
-    function handleSubmit(event) {
-        event.preventDefault();
+  function handleBook(data) {
+    const saved = addReservation(data);
+    setConfirmation(saved);
+  }
 
-        setReservation({
-            name,
-            date,
-            time,
-            guests,
-            eventType,
-        });
-    }
+  return (
+    <div>
+      <h2>Book a Table</h2>
 
-    return (
-        <div>
-            <h2>Book a Table</h2>
+      <ReservationForm submitLabel="Reserve Table" onSubmit={handleBook} />
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Your Name"
-                    value={name}
-                    onChange={(event) => setName(event.target.value)}
-                    required
-                />
-
-                <input
-                    type="date"
-                    value={date}
-                    onChange={(event) => setDate(event.target.value)}
-                    required
-                />
-
-                <input
-                    type="time"
-                    value={time}
-                    onChange={(event) => setTime(event.target.value)}
-                    required
-                />
-
-                <input
-                    type="number"
-                    min="1"
-                    value={guests}
-                    onChange={(event) => setGuests(Number(event.target.value))}
-                    required
-                />
-
-
-                <label>Reservation Type:</label>
-
-                <select
-                    value={eventType}
-                    onChange={(event) => setEventType(event.target.value)}
-                >
-                    <option value="Regular">Regular Table</option>
-                    <option value="Birthday">Birthday</option>
-                    <option value="Anniversary">Anniversary</option>
-                    <option value="Business">Business Event</option>
-                    <option value="Other">Other Special Event</option>
-                </select>
-
-
-                <button type="submit">
-                    Reserve Table
-                </button>
-            </form>
-
-            {reservation && (
-                <div>
-                    <h3>Reservation Confirmed!</h3>
-
-                    <p>Name: {reservation.name}</p>
-                    <p>Date: {reservation.date}</p>
-                    <p>Time: {reservation.time}</p>
-                    <p>Guests: {reservation.guests}</p>
-                    <p>Reservation Type: {reservation.eventType}</p>
-                </div>
-            )}
-
+      {confirmation && (
+        <div role="status">
+          <h3>Reservation Confirmed!</h3>
+          <p>
+            Thank you, {confirmation.name}. Your {confirmation.eventType}{" "}
+            reservation for {confirmation.guests} on {confirmation.date} at{" "}
+            {confirmation.time} has been received. A confirmation has been
+            sent, and the restaurant will approve it shortly.
+          </p>
+          <button onClick={() => setConfirmation(null)}>Dismiss</button>
         </div>
-    );
+      )}
+
+      <ReservationList />
+    </div>
+  );
 }
 
 export default Reservation;

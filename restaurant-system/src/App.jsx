@@ -8,6 +8,7 @@ import CartPage from "./pages/CartPage";
 import ReservationPage from "./pages/ReservationPage";
 import AccountPage from "./pages/AccountPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import AIAssistant from "./components/AIAssistant";
 import { useRestaurant } from "./context/RestaurantContext";
 
 function App() {
@@ -122,6 +123,8 @@ function App() {
           }
         />
       </Routes>
+
+      <AIAssistant />
     </div>
   );
 
