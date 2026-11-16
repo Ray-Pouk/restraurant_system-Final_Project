@@ -2,6 +2,7 @@
 import { useState } from "react";
 import MenuItem from "./MenuItem";
 import SearchFilter from "./SearchFilter";
+import { useRestaurant } from "../context/RestaurantContext";
 
 function Menu({ onAddToCart }) {
   // 1. State variables for searching and filtering
@@ -10,45 +11,9 @@ function Menu({ onAddToCart }) {
   const [dietary, setDietary] = useState("All");
   const [price, setPrice] = useState("All");
 
-  // 2. Menu data
-  const menuItems = [
-    {
-      id: 1,
-      name: "Chicken Wings",
-      category: "Starters",
-      description: "Crispy chicken wings",
-      ingredients: "Chicken, seasoning, sauce",
-      price: 15.99,
-      dietary: ["Gluten-Free"],
-    },
-    {
-      id: 2,
-      name: "Cheeseburger",
-      category: "Mains",
-      description: "Beef burger with cheese",
-      ingredients: "Beef, cheese, lettuce, tomato",
-      price: 18.99,
-      dietary: [],
-    },
-    {
-      id: 3,
-      name: "Vegetable Salad",
-      category: "Starters",
-      description: "Fresh vegetable salad",
-      ingredients: "Lettuce, tomato, cucumber",
-      price: 9.99,
-      dietary: ["Vegetarian", "Vegan", "Gluten-Free"],
-    },
-    {
-      id: 4,
-      name: "Chocolate Cake",
-      category: "Desserts",
-      description: "Rich chocolate cake",
-      ingredients: "Chocolate, flour, sugar",
-      price: 7.99,
-      dietary: ["Vegetarian"],
-    },
-  ];
+  // 2. Menu data comes from shared context (editable by admin later)
+  const { menu } = useRestaurant();
+  const menuItems = menu.filter((item) => item.available);
 
   // 3. Filter menu items
   const filteredItems = menuItems.filter((item) => {

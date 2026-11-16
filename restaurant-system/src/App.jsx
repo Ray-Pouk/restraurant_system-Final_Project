@@ -8,11 +8,12 @@ import CartPage from "./pages/CartPage";
 import ReservationPage from "./pages/ReservationPage";
 import AccountPage from "./pages/AccountPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import { useRestaurant } from "./context/RestaurantContext";
 
 function App() {
   const [cart, setCart] = useState([]);
-  const [order, setOrder] = useState(null);
-  const [orderHistory, setOrderHistory] = useState([]);
+  const [currentOrderNumber, setCurrentOrderNumber] = useState(null);
+  const { orders, addOrder, updateOrderStatus } = useRestaurant();
   const navigate = useNavigate();
 
   // Add items to cart
@@ -55,26 +56,14 @@ function App() {
   }
 
   function placeOrder(newOrder) {
-    const completedOrder = {
-      ...newOrder,
-      orderNumber: Date.now(),
-      status: "Pending",
-    };
-
-    setOrder(completedOrder);
-    setOrderHistory((currentHistory) => [
-      ...currentHistory,
-      completedOrder,
-    ]);
+    const savedOrder = addOrder(newOrder);
+    setCurrentOrderNumber(savedOrder.orderNumber);
     setCart([]);
   }
 
-  function updateOrderStatus(newStatus) {
-    setOrder((currentOrder) => ({
-      ...currentOrder,
-      status: newStatus,
-    }));
-  }
+  // The order being tracked, looked up from the shared orders list
+  const order =
+    orders.find((o) => o.orderNumber === currentOrderNumber) || null;
 
   // Calculate total number of items
   const totalItems = cart.reduce(
@@ -114,7 +103,7 @@ function App() {
 
         <Route
           path="/account"
-          element={<AccountPage orders={orderHistory} />}
+          element={<AccountPage orders={orders} />}
         />
 
         <Route
@@ -123,10 +112,12 @@ function App() {
             <OrderConfirmationPage
               order={order}
               onNewOrder={() => {
-                setOrder(null);
+                setCurrentOrderNumber(null);
                 navigate("/menu");
               }}
-              onUpdateStatus={updateOrderStatus}
+              onUpdateStatus={(status) =>
+                updateOrderStatus(currentOrderNumber, status)
+              }
             />
           }
         />
