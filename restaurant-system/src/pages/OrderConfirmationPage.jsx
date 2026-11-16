@@ -2,11 +2,7 @@
 import OrderConfirmation from "../components/OrderConfirmation";
 import OrderTracking from "../components/OrderTracking";
 
-function OrderConfirmationPage({
-  order,
-  onNewOrder,
-  onUpdateStatus,
-}) {
+function OrderConfirmationPage({ order, onNewOrder }) {
   if (!order) {
     return <p>No active order found.</p>;
   }
@@ -20,10 +16,7 @@ function OrderConfirmationPage({
         onNewOrder={onNewOrder}
       />
 
-      <OrderTracking
-        order={order}
-        onUpdateStatus={onUpdateStatus}
-      />
+      <OrderTracking order={order} />
     </div>
   );
 }

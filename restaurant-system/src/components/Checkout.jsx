@@ -1,10 +1,12 @@
 
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 function Checkout({ cart, onPlaceOrder }) {
+  const { user } = useAuth();
   const [orderType, setOrderType] = useState("Pickup");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState(user?.name ?? "");
+  const [phone, setPhone] = useState(user?.phone ?? "");
   const [address, setAddress] = useState("");
 
   function handleSubmit(event) {

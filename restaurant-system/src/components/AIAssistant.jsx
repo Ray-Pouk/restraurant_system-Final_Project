@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { useRestaurant } from "../context/RestaurantContext";
 import { getAIResponse, suggestedQuestions } from "../data/aiResponses";
 import "./AIAssistant.css";
 
 function AIAssistant() {
   const { menu, orders } = useRestaurant();
+  const { user } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
@@ -27,7 +29,12 @@ function AIAssistant() {
     const question = text.trim();
     if (!question) return;
 
-    const reply = getAIResponse(question, { menu, orders });
+    const reply = getAIResponse(question, {
+      menu,
+      // only this customer's orders (none for guests)
+      orders: orders.filter((o) => user && o.userId === user.id),
+      dietary: user?.preferences?.dietary ?? "None",
+    });
 
     setMessages((current) => [
       ...current,

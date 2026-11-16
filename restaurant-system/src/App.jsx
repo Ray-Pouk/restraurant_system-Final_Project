@@ -7,14 +7,18 @@ import MenuPage from "./pages/MenuPage";
 import CartPage from "./pages/CartPage";
 import ReservationPage from "./pages/ReservationPage";
 import AccountPage from "./pages/AccountPage";
+import LoginPage from "./pages/LoginPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import AIAssistant from "./components/AIAssistant";
+import { useAuth } from "./context/AuthContext";
 import { useRestaurant } from "./context/RestaurantContext";
 
 function App() {
   const [cart, setCart] = useState([]);
   const [currentOrderNumber, setCurrentOrderNumber] = useState(null);
-  const { orders, addOrder, updateOrderStatus } = useRestaurant();
+  const { orders, addOrder } = useRestaurant();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   // Add items to cart
@@ -57,7 +61,7 @@ function App() {
   }
 
   function placeOrder(newOrder) {
-    const savedOrder = addOrder(newOrder);
+    const savedOrder = addOrder({ ...newOrder, userId: user?.id ?? null });
     setCurrentOrderNumber(savedOrder.orderNumber);
     setCart([]);
   }
@@ -104,8 +108,14 @@ function App() {
 
         <Route
           path="/account"
-          element={<AccountPage orders={orders} />}
+          element={
+            <ProtectedRoute>
+              <AccountPage />
+            </ProtectedRoute>
+          }
         />
+
+        <Route path="/login" element={<LoginPage />} />
 
         <Route
           path="/order-confirmation"
@@ -116,9 +126,6 @@ function App() {
                 setCurrentOrderNumber(null);
                 navigate("/menu");
               }}
-              onUpdateStatus={(status) =>
-                updateOrderStatus(currentOrderNumber, status)
-              }
             />
           }
         />

@@ -2,13 +2,15 @@ import { useState } from "react";
 import ReservationForm from "./ReservationForm";
 import ReservationList from "./ReservationList";
 import { useRestaurant } from "../context/RestaurantContext";
+import { useAuth } from "../context/AuthContext";
 
 function Reservation() {
   const { addReservation } = useRestaurant();
+  const { user } = useAuth();
   const [confirmation, setConfirmation] = useState(null);
 
   function handleBook(data) {
-    const saved = addReservation(data);
+    const saved = addReservation({ ...data, userId: user?.id ?? null });
     setConfirmation(saved);
   }
 

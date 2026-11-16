@@ -1,19 +1,8 @@
+import { ORDER_STATUSES } from "../data/orderStatuses";
 
-function OrderTracking({ order, onUpdateStatus }) {
-  const statuses = [
-    "Pending",
-    "Preparing",
-    "Ready",
-    "Completed",
-  ];
-
-  const currentStatusIndex = statuses.indexOf(order.status);
-
-  function moveToNextStatus() {
-    if (currentStatusIndex < statuses.length - 1) {
-      onUpdateStatus(statuses[currentStatusIndex + 1]);
-    }
-  }
+// Read-only for customers: only the restaurant (admin) changes the status.
+function OrderTracking({ order }) {
+  const currentStatusIndex = ORDER_STATUSES.indexOf(order.status);
 
   return (
     <div>
@@ -30,21 +19,18 @@ function OrderTracking({ order, onUpdateStatus }) {
       <h3>Order Progress</h3>
 
       <ul>
-        {statuses.map((status, index) => (
+        {ORDER_STATUSES.map((status, index) => (
           <li key={status}>
             {index <= currentStatusIndex ? "✓" : "○"} {status}
           </li>
         ))}
       </ul>
 
-      <button
-        onClick={moveToNextStatus}
-        disabled={currentStatusIndex === statuses.length - 1}
-      >
-        {currentStatusIndex === statuses.length - 1
-          ? "Order Completed"
-          : "Move to Next Status"}
-      </button>
+      <p>
+        {order.status === "Delivered"
+          ? "Your order has been delivered. Enjoy your meal!"
+          : "This page updates automatically as the restaurant prepares your order."}
+      </p>
     </div>
   );
 }

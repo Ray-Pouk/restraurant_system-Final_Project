@@ -96,11 +96,18 @@ const rules = [
   {
     // "What do you recommend?"
     keywords: ["recommend", "suggest", "what should i"],
-    reply: ({ menu }) => {
-      const popular = menu.filter((i) => i.available && i.popular && i.category === "Mains");
-      return popular.length
-        ? `Based on popular orders, we recommend our ${joinList(names(popular))}.`
-        : "Everything on our menu is great. Try something from our Mains!";
+    reply: ({ menu, dietary }) => {
+      const hasDiet = dietary && dietary !== "None";
+      const matchesDiet = (i) => !hasDiet || i.dietary.includes(dietary);
+      const mains = menu.filter(
+        (i) => i.available && i.category === "Mains" && matchesDiet(i)
+      );
+      const popular = mains.filter((i) => i.popular);
+      const picks = popular.length ? popular : mains.slice(0, 2);
+      if (picks.length === 0) return "Everything on our menu is great. Try something from our Mains!";
+      return hasDiet
+        ? `Since you prefer ${dietary} meals, we recommend our ${joinList(names(picks))}.`
+        : `Based on popular orders, we recommend our ${joinList(names(picks))}.`;
     },
   },
   {

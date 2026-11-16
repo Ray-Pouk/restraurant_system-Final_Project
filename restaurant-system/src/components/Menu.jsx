@@ -3,12 +3,18 @@ import { useState } from "react";
 import MenuItem from "./MenuItem";
 import SearchFilter from "./SearchFilter";
 import { useRestaurant } from "../context/RestaurantContext";
+import { useAuth } from "../context/AuthContext";
 
 function Menu({ onAddToCart }) {
+  const { user } = useAuth();
+  const prefs = user?.preferences;
+
   // 1. State variables for searching and filtering
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("All");
-  const [dietary, setDietary] = useState("All");
+  const [category, setCategory] = useState(prefs?.favoriteCategory ?? "All");
+  const [dietary, setDietary] = useState(
+    prefs && prefs.dietary !== "None" ? prefs.dietary : "All"
+  );
   const [price, setPrice] = useState("All");
 
   // 2. Menu data comes from shared context (editable by admin later)

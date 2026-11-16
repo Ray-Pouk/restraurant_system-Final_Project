@@ -1,16 +1,33 @@
 import { useState } from "react";
 import ReservationForm from "./ReservationForm";
+import { Link } from "react-router-dom";
 import { useRestaurant } from "../context/RestaurantContext";
+import { useAuth } from "../context/AuthContext";
 
 function ReservationList() {
   const { reservations, updateReservation, cancelReservation } =
     useRestaurant();
+  const { user } = useAuth();
   const [editingId, setEditingId] = useState(null);
 
   // Soonest first
-  const sorted = [...reservations].sort((a, b) =>
+  const sorted = reservations
+    .filter((r) => r.userId === user?.id)
+    .sort((a, b) =>
     `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`)
   );
+
+  if (!user) {
+    return (
+      <div>
+        <h2>My Reservations</h2>
+        <p>
+          <Link to="/login">Log in</Link> to view, edit or cancel your
+          reservations.
+        </p>
+      </div>
+    );
+  }
 
   function handleSave(id, changes) {
     // An edited booking needs to be approved again

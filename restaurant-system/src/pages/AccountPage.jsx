@@ -1,14 +1,13 @@
-
 import CustomerAccount from "../components/CustomerAccount";
 
-function AccountPage({ orders }) {
+function AccountPage() {
   return (
     <div>
       <h1>My Account</h1>
 
       <p>Manage your customer profile and preferences.</p>
 
-      <CustomerAccount orders={orders} />
+      <CustomerAccount />
     </div>
   );
 }
