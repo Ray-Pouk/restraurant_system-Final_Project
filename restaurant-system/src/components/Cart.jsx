@@ -15,7 +15,7 @@ function Cart({ cart, totalItems, onRemove, onUpdateQuantity }) {
       ) : (
         <>
           {cart.map((item) => (
-            <div key={item.id}>
+            <div key={item.id} className="card">
               <h3>{item.name}</h3>
 
               <p>Price: ${item.price.toFixed(2)}</p>

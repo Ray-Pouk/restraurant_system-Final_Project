@@ -59,13 +59,15 @@ const matchesPrice =
 />
 
       {filteredItems.length > 0 ? (
-        filteredItems.map((item) => (
-          <MenuItem
-            key={item.id}
-            item={item}
-            onAddToCart={onAddToCart}
-          />
-        ))
+        <div className="menu-grid">
+          {filteredItems.map((item) => (
+            <MenuItem
+              key={item.id}
+              item={item}
+              onAddToCart={onAddToCart}
+            />
+          ))}
+        </div>
       ) : (
         <p>No menu items found.</p>
       )}

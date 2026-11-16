@@ -24,7 +24,7 @@ function AdminPage() {
         {pendingReservations === 1 ? "" : "s"} awaiting approval
       </p>
 
-      <div>
+      <div className="admin-tabs">
         <button onClick={() => setTab("orders")} disabled={tab === "orders"}>
           Orders ({orders.length})
         </button>

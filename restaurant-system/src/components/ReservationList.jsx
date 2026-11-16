@@ -49,7 +49,7 @@ function ReservationList() {
         <p>You don't have any reservations yet.</p>
       ) : (
         sorted.map((reservation) => (
-          <div key={reservation.id}>
+          <div key={reservation.id} className="card">
             {editingId === reservation.id ? (
               <ReservationForm
                 initialValues={reservation}

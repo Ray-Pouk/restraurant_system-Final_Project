@@ -12,6 +12,8 @@ function SearchFilter({
     <div>
       <h2>Find Menu Items</h2>
 
+      <div className="filters">
+
       {/* Search */}
       <input
         type="text"
@@ -55,6 +57,7 @@ function SearchFilter({
   <option value="Over20">Over $20</option>
 </select>
 
+      </div>
     </div>
   );
 }

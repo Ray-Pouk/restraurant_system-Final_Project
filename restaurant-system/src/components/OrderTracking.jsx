@@ -6,7 +6,7 @@ function OrderTracking({ order }) {
   const currentStatusIndex = ORDER_STATUSES.indexOf(order.status);
 
   return (
-    <div>
+    <div className="card">
       <h2>Order Tracking</h2>
 
       <p>

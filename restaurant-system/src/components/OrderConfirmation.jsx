@@ -13,7 +13,7 @@ function OrderConfirmation({ order, onNewOrder }) {
   const total = subtotal + tax;
 
   return (
-    <div>
+    <div className="card">
       <h2>Order Confirmed!</h2>
 
       <p>Thank you, {order.customerName}!</p>

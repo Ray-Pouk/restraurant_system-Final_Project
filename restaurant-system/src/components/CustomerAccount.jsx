@@ -82,7 +82,7 @@ function CustomerAccount() {
 
         {myOrders.length > 0 ? (
           myOrders.map((order) => (
-            <div key={order.orderNumber}>
+            <div key={order.orderNumber} className="card">
               <h3>Order #{order.orderNumber}</h3>
               <p>Status: {order.status}</p>
               <Link to={`/orders/${order.orderNumber}`}>

@@ -8,15 +8,30 @@ function Checkout({ cart, onPlaceOrder }) {
   const [name, setName] = useState(user?.name ?? "");
   const [phone, setPhone] = useState(user?.phone ?? "");
   const [address, setAddress] = useState("");
+  const [errors, setErrors] = useState({});
 
   function handleSubmit(event) {
     event.preventDefault();
 
+    const newErrors = {};
+    const digits = phone.replace(/\D/g, "");
+    if (digits.length < 10 || digits.length > 15) {
+      newErrors.phone = "Enter a valid phone number (10-15 digits).";
+    }
+    if (orderType === "Delivery" && address.trim().length < 5) {
+      newErrors.address = "Please enter a complete delivery address.";
+    }
+    if (cart.length === 0) {
+      newErrors.cart = "Your cart is empty.";
+    }
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+
     const order = {
-      customerName: name,
-      phone: phone,
+      customerName: name.trim(),
+      phone: phone.trim(),
       orderType: orderType,
-      address: orderType === "Delivery" ? address : "",
+      address: orderType === "Delivery" ? address.trim() : "",
       items: cart,
     };
 
@@ -24,7 +39,7 @@ function Checkout({ cart, onPlaceOrder }) {
   }
 
   return (
-    <div>
+    <div className="card">
       <h2>Checkout</h2>
 
       <form onSubmit={handleSubmit}>
@@ -51,6 +66,7 @@ function Checkout({ cart, onPlaceOrder }) {
           onChange={(event) => setPhone(event.target.value)}
           required
         />
+        {errors.phone && <p role="alert">{errors.phone}</p>}
 
         <h3>Order Type</h3>
 
@@ -73,8 +89,11 @@ function Checkout({ cart, onPlaceOrder }) {
               onChange={(event) => setAddress(event.target.value)}
               required
             />
+            {errors.address && <p role="alert">{errors.address}</p>}
           </div>
         )}
+
+        {errors.cart && <p role="alert">{errors.cart}</p>}
 
         <button type="submit" disabled={cart.length === 0}>
           Place Order

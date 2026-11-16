@@ -26,7 +26,7 @@ function AdminReservations() {
         <p>No reservations to show.</p>
       ) : (
         visible.map((r) => (
-          <div key={r.id}>
+          <div key={r.id} className="card">
             <h3>
               {r.eventType} - {r.date} at {r.time}
             </h3>

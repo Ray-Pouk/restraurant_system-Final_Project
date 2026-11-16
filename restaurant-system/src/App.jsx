@@ -9,6 +9,7 @@ import ReservationPage from "./pages/ReservationPage";
 import AccountPage from "./pages/AccountPage";
 import LoginPage from "./pages/LoginPage";
 import AdminPage from "./pages/AdminPage";
+import NotFound from "./pages/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import AIAssistant from "./components/AIAssistant";
@@ -75,8 +76,9 @@ function App() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar cartCount={totalItems} />
 
+      <main className="page">
       <Routes>
         <Route path="/" element={<Home />} />
 
@@ -127,7 +129,9 @@ function App() {
           path="/orders/:orderNumber"
           element={<OrderConfirmationPage onNewOrder={() => navigate("/menu")} />}
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
+      </main>
 
       <AIAssistant />
     </div>

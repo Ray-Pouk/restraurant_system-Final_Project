@@ -35,7 +35,7 @@ function AdminOrders() {
           );
 
           return (
-            <div key={order.orderNumber}>
+            <div key={order.orderNumber} className="card">
               <h3>Order #{order.orderNumber}</h3>
               <p>
                 {order.customerName} - {order.phone} - {order.orderType}

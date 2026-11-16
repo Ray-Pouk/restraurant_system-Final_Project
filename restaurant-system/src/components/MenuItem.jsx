@@ -1,6 +1,6 @@
 function MenuItem({ item, onAddToCart }) {
   return (
-    <div>
+    <div className="card">
       <h3>
         {item.name}
         {item.isSpecial && " ⭐ Today's Special"}

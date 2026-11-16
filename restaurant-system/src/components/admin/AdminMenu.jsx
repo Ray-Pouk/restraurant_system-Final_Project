@@ -23,7 +23,7 @@ function AdminMenu() {
       <h3>Current Menu ({menu.length} items)</h3>
 
       {menu.map((item) => (
-        <div key={item.id}>
+        <div key={item.id} className="card">
           {editingId === item.id ? (
             <MenuItemForm
               initialValues={item}
