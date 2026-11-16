@@ -1,3 +1,4 @@
+import FeedbackForm from "./FeedbackForm";
 import { ORDER_STATUSES } from "../data/orderStatuses";
 
 // Read-only for customers: only the restaurant (admin) changes the status.
@@ -31,6 +32,8 @@ function OrderTracking({ order }) {
           ? "Your order has been delivered. Enjoy your meal!"
           : "This page updates automatically as the restaurant prepares your order."}
       </p>
+
+      <FeedbackForm order={order} />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useRestaurant } from "../context/RestaurantContext";
 
@@ -84,6 +85,9 @@ function CustomerAccount() {
             <div key={order.orderNumber}>
               <h3>Order #{order.orderNumber}</h3>
               <p>Status: {order.status}</p>
+              <Link to={`/orders/${order.orderNumber}`}>
+                Track order / leave feedback
+              </Link>
               <h4>Items Ordered:</h4>
               {order.items.map((item) => (
                 <p key={item.id}>

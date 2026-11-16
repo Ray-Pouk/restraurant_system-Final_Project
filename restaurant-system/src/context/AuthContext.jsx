@@ -24,7 +24,8 @@ export function AuthProvider({ children }) {
   const [users, setUsers] = useLocalStorage("srms_users", seedUsers);
   const [sessionUserId, setSessionUserId] = useLocalStorage(
     "srms_session",
-    null
+    null,
+    sessionStorage // per-tab login, so admin and customer can be open side by side
   );
 
   const user = users.find((u) => u.id === sessionUserId) || null;

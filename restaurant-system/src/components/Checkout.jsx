@@ -30,6 +30,12 @@ function Checkout({ cart, onPlaceOrder }) {
       <form onSubmit={handleSubmit}>
         <h3>Customer Information</h3>
 
+        <p>
+          {user
+            ? `Ordering as ${user.name} (${user.role === "admin" ? "Admin" : "Customer"}). This order will appear in your order history.`
+            : "Ordering as a guest. Log in to save this order to your history."}
+        </p>
+
         <input
           type="text"
           placeholder="Full Name"

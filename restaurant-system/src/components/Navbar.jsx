@@ -11,7 +11,15 @@ function Navbar() {
   }
 
   return (
-    <nav>
+    <nav
+      style={{
+        position: "sticky",
+        top: 0,
+        zIndex: 900,
+        background: "#fff",
+        borderBottom: "1px solid #ccc",
+      }}
+    >
       <h2>My Restaurant</h2>
 
       <ul>
@@ -25,12 +33,14 @@ function Navbar() {
             <li><Link to="/account">Account</Link></li>
             {isAdmin && <li><Link to="/admin">Admin</Link></li>}
             <li>
-              Hi, {user.name.split(" ")[0]}{" "}
+              Logged in as {user.name.split(" ")[0]} ({isAdmin ? "Admin" : "Customer"}){" "}
               <button onClick={handleLogout}>Log Out</button>
             </li>
           </>
         ) : (
-          <li><Link to="/login">Log In</Link></li>
+          <li>
+            Browsing as guest · <Link to="/login">Log In</Link>
+          </li>
         )}
       </ul>
     </nav>

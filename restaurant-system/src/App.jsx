@@ -8,6 +8,7 @@ import CartPage from "./pages/CartPage";
 import ReservationPage from "./pages/ReservationPage";
 import AccountPage from "./pages/AccountPage";
 import LoginPage from "./pages/LoginPage";
+import AdminPage from "./pages/AdminPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 import AIAssistant from "./components/AIAssistant";
@@ -16,8 +17,7 @@ import { useRestaurant } from "./context/RestaurantContext";
 
 function App() {
   const [cart, setCart] = useState([]);
-  const [currentOrderNumber, setCurrentOrderNumber] = useState(null);
-  const { orders, addOrder } = useRestaurant();
+  const { addOrder } = useRestaurant();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -62,13 +62,10 @@ function App() {
 
   function placeOrder(newOrder) {
     const savedOrder = addOrder({ ...newOrder, userId: user?.id ?? null });
-    setCurrentOrderNumber(savedOrder.orderNumber);
     setCart([]);
+    // Go straight to the confirmation / tracking page for this order
+    navigate(`/orders/${savedOrder.orderNumber}`);
   }
-
-  // The order being tracked, looked up from the shared orders list
-  const order =
-    orders.find((o) => o.orderNumber === currentOrderNumber) || null;
 
   // Calculate total number of items
   const totalItems = cart.reduce(
@@ -118,16 +115,17 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
 
         <Route
-          path="/order-confirmation"
+          path="/admin"
           element={
-            <OrderConfirmationPage
-              order={order}
-              onNewOrder={() => {
-                setCurrentOrderNumber(null);
-                navigate("/menu");
-              }}
-            />
+            <ProtectedRoute adminOnly>
+              <AdminPage />
+            </ProtectedRoute>
           }
+        />
+
+        <Route
+          path="/orders/:orderNumber"
+          element={<OrderConfirmationPage onNewOrder={() => navigate("/menu")} />}
         />
       </Routes>
 

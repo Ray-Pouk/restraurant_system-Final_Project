@@ -12,6 +12,8 @@ export function RestaurantProvider({ children }) {
     []
   );
 
+  const [feedback, setFeedback] = useLocalStorage("srms_feedback", []);
+
   // ---- Menu ----
   function addMenuItem(item) {
     setMenu((current) => {
@@ -69,6 +71,13 @@ export function RestaurantProvider({ children }) {
     updateReservation(id, { status: "Cancelled" });
   }
 
+  // ---- Feedback (one entry per order) ----
+  function addFeedback(data) {
+    const entry = { ...data, id: Date.now(), createdAt: new Date().toISOString() };
+    setFeedback((current) => [...current, entry]);
+    return entry;
+  }
+
   const value = {
     menu,
     addMenuItem,
@@ -81,6 +90,8 @@ export function RestaurantProvider({ children }) {
     addReservation,
     updateReservation,
     cancelReservation,
+    feedback,
+    addFeedback,
   };
 
   return (

@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function LoginPage() {
-  const { isLoggedIn, signup, login } = useAuth();
-  const navigate = useNavigate();
+  const { isLoggedIn, isAdmin, signup, login } = useAuth();
   const location = useLocation();
-  const redirectTo = location.state?.from || "/account";
+  const redirectTo = location.state?.from || (isAdmin ? "/admin" : "/account");
 
   const [mode, setMode] = useState("login"); // "login" or "signup"
   const [form, setForm] = useState({
@@ -35,11 +34,9 @@ function LoginPage() {
         ? login(form.email, form.password)
         : signup(form);
 
-    if (message) {
-      setError(message);
-    } else {
-      navigate(redirectTo, { replace: true });
-    }
+    // On success the page re-renders as logged in and redirects (see above),
+    // using the new user's role.
+    if (message) setError(message);
   }
 
   function switchMode() {
@@ -104,6 +101,12 @@ function LoginPage() {
           {mode === "login" ? "Create one" : "Log in"}
         </button>
       </p>
+
+      {mode === "login" && (
+        <p>
+          <small>Demo admin: admin@restaurant.com / admin123</small>
+        </p>
+      )}
 
       <p>You can also browse and order without an account.</p>
     </div>
