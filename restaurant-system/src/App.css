@@ -202,6 +202,19 @@ button:disabled {
 
 .menu-grid .card {
   margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Pin price and button to the bottom so cards line up across a row */
+.card-footer {
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.card-footer .price {
+  margin: 0 0 0.5rem;
+  font-weight: 600;
 }
 
 .filters {

@@ -17,11 +17,13 @@ function MenuItem({ item, onAddToCart }) {
         <p>Dietary: {item.dietary.join(", ")}</p>
       )}
 
-      <p>${item.price.toFixed(2)}</p>
+      <div className="card-footer">
+        <p className="price">${item.price.toFixed(2)}</p>
 
-      <button onClick={() => onAddToCart(item)}>
-        Add to Cart
-      </button>
+        <button onClick={() => onAddToCart(item)}>
+          Add to Cart
+        </button>
+      </div>
     </div>
   );
 }
